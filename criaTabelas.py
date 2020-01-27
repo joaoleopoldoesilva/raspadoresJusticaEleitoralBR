@@ -14,11 +14,10 @@ patternOutros = re.compile(r'outr[ao]s?')
 dicUF = {'AC':'Acre', 'AL':'Alagoas', 'AM':'Amazonas', 'AP':'Amapá', 'BA':'Bahia', 'CE':'Ceará', 'DF':'Distrito Federal', 'ES':'Espírito Santo', 'GO':'Goiás', 'MA':'Maranhão', 'MT':'Mato Grosso', 'MS':'Mato Grosso do Sul', 'MG':'Minas Gerais', 'PA':'Pará', 'PB':'Paraíba', 'PR':'Paraná', 'PE':'Pernambuco', 'PI':'Piauí', 'RJ':'Rio de Janeiro', 'RN':'Rio Grande do Norte', 'RS':'Rio Grande do Sul', 'RO':'Rondônia', 'RR':'Roraima', 'SC':'Santa Catarina', 'SP':'São Paulo', 'SE':'Sergipe', 'TO':'Tocantins', 'TODOS':'Todos'}
 
 raiz = "C:\\Users\\matheus\\Documents\\Checagem respostas tribunais\\Final\\2aRaspDecisoes\\CorrigiuCorreg\\ComTabelas"
-#dest = "C:\\Users\\matheus\\Documents\\Checagem respostas tribunais\\Final\\2aRaspDecisoes\\CorrigiuCorreg\\ComTabelas\\Teste"#remover
 
 def codificaTipoParte(nomeParte, tipoNaoCodi, tipoParte=''):
-    if nomeParte:#precisa dessa checagem?
-        nomeParte = nomeParte.lower()#pode botar .lower() na chamada da função?
+    if nomeParte:
+        nomeParte = nomeParte.lower()
         if nomeParte == 'sigiloso':
             tipoParte = 'Sigiloso'
         elif patternMP.search(nomeParte):
@@ -136,7 +135,7 @@ def criaTabelas(tribunal, n_proc=0, n_parte=0, n_decisao=0, lin_parte=1):
                     sheetPartesSADP.cell(lin_parte, 7).value = listaTipo_sadp[i]
                 else:
                     sheetPartesSADP.cell(lin_parte, 7).value = listaOutro_nao_codi[i]
-                tipo_sadp = codificaTipoParte(listaNome[i], sheetPartesSADP.cell(lin_parte, 7).value)###
+                tipo_sadp = codificaTipoParte(listaNome[i], sheetPartesSADP.cell(lin_parte, 7).value)
                 sheetPartesSADP.cell(lin_parte, 3).value = tipo_sadp
                 cargo = buscaCargo(listaNome[i], sheetPartesSADP.cell(lin_parte, 7).value)
                 if cargo:
@@ -146,7 +145,7 @@ def criaTabelas(tribunal, n_proc=0, n_parte=0, n_decisao=0, lin_parte=1):
                     sheetPartesSADP.cell(lin_parte, 10).value = partido.group().upper()
                 if buscaOutros(listaNome[i]):
                     sheetPartesSADP.cell(lin_parte, 8).fill = PatternFill(start_color="FFA500", fill_type="solid")
-        elif sheetFonte.cell(lin, 25).value != None and sheetFonte.cell(lin, 25).value != -1:#tá funcionando a identificação dos missing (-1)??
+        elif sheetFonte.cell(lin, 25).value != None and sheetFonte.cell(lin, 25).value != -1:
             n_parte+=1
             lin_parte+=1
             sheetPartesSADP.cell(lin_parte, 1).value = n_parte

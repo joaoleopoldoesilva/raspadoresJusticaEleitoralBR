@@ -1,0 +1,77 @@
+CREATE TABLE processo (
+    id_processo integer NOT NULL,
+    id_eleicao integer,
+    status character varying,
+    n_unico character varying,
+    n_protocolo character varying,
+    ano_protocolo integer,
+    assunto_completo character varying,
+    ass_ape boolean,
+    ass_cf boolean,
+    ass_cogirfce boolean,
+    ass_drall boolean,
+    data_raspagem date,
+	CONSTRAINT processo_pkey PRIMARY KEY (id_processo)
+);
+
+CREATE TABLE parte (
+    id_parte integer NOT NULL,
+    id_processo integer,
+    nome character varying,
+    tipo character varying,
+    partido character varying,
+    ativa_passiva character varying,
+    eleito boolean,
+	CONSTRAINT parte_pkey PRIMARY KEY (id_parte)
+);
+
+CREATE TABLE geografia (
+    id_geografia integer NOT NULL,
+    uf character varying,
+    municipio character varying,
+	CONSTRAINT geografia_pkey PRIMARY KEY (id_geografia)
+);
+
+CREATE TABLE eleicao (
+    id_eleicao integer NOT NULL,
+    id_geografia integer,
+    cargo character varying,
+    ano integer,
+	CONSTRAINT eleicao_pkey PRIMARY KEY (id_eleicao)
+);
+
+CREATE TABLE autuacao (
+    id_autuacao integer NOT NULL,
+    id_processo integer,
+    id_decisao integer,
+    ordem integer,
+    classe character varying,
+    grau character varying,
+    	CONSTRAINT autuacao_pkey PRIMARY KEY (id_autuacao)
+);
+
+CREATE TABLE decisao (
+    id_decisao integer NOT NULL,
+    nome_decisor character varying,
+    tipo character varying,
+    conteudo character varying,
+	CONSTRAINT decisao_pkey PRIMARY KEY (id_decisao)
+);
+
+ALTER TABLE processo
+ADD CONSTRAINT processo_id_eleicao_fkey FOREIGN KEY (id_eleicao)
+	REFERENCES eleicao (id_eleicao);
+
+ALTER TABLE parte
+ADD CONSTRAINT parte_id_processo_fkey FOREIGN KEY (id_processo)
+	REFERENCES processo (id_processo);
+
+ALTER TABLE eleicao
+ADD CONSTRAINT eleicao_id_geografia_fkey FOREIGN KEY (id_geografia)
+	REFERENCES geografia (id_geografia);
+	
+ALTER TABLE autuacao
+ADD CONSTRAINT autuacao_id_processo_fkey FOREIGN KEY (id_processo)
+	REFERENCES processo (id_processo),
+ADD CONSTRAINT autuacao_id_decisao_fkey FOREIGN KEY (id_decisao)
+	REFERENCES decisao (id_decisao);
